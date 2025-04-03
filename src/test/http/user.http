@@ -1,0 +1,5 @@
+### User Endpoints ###
+
+### Get current user profile
+GET http://localhost:3333/api/users/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiaWF0IjoxNzQzNjU1MTE2LCJleHAiOjE3NDM3NDE1MTZ9.QPXAqmsEPeuVMt1VjtgpljAKNhtxT0_0IqatccpSL5Y

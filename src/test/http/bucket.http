@@ -1,0 +1,23 @@
+### Bucket Endpoints ###
+
+### Create new bucket
+POST http://localhost:3333/api/buckets
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiaWF0IjoxNzQzNjU1MTE2LCJleHAiOjE3NDM3NDE1MTZ9.QPXAqmsEPeuVMt1VjtgpljAKNhtxT0_0IqatccpSL5Y
+Content-Type: application/json
+
+{
+    "name": "My First Bucket",
+    "description": "A bucket for my favorite links"
+}
+
+### Get all buckets for current user
+GET http://localhost:3333/api/buckets
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiaWF0IjoxNzQzNjU1MTE2LCJleHAiOjE3NDM3NDE1MTZ9.QPXAqmsEPeuVMt1VjtgpljAKNhtxT0_0IqatccpSL5Y
+
+### Get specific bucket by ID
+GET http://localhost:3333/api/buckets/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiaWF0IjoxNzQzNjU1MTE2LCJleHAiOjE3NDM3NDE1MTZ9.QPXAqmsEPeuVMt1VjtgpljAKNhtxT0_0IqatccpSL5Y
+
+### Delete specific bucket
+DELETE http://localhost:3333/api/buckets/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiaWF0IjoxNzQzNjU1MTE2LCJleHAiOjE3NDM3NDE1MTZ9.QPXAqmsEPeuVMt1VjtgpljAKNhtxT0_0IqatccpSL5Y
