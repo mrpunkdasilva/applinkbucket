@@ -1,0 +1,20 @@
+### Authentication Endpoints ###
+
+### Register new user
+POST http://localhost:3333/api/auth/register
+Content-Type: application/json
+
+{
+    "name": "Test User",
+    "email": "test@example.com",
+    "password": "password123"
+}
+
+### Login to get token
+POST http://localhost:3333/api/auth/authenticate
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "password": "password123"
+}
