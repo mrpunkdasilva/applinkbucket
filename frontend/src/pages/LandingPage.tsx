@@ -89,16 +89,105 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* Social Proof Section */}
+      {/* New Fun CTA Section with Cat Meme */}
       <div className="container mx-auto px-4 py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Trusted by Developers & Teams
-          </h2>
-          <div className="flex justify-center space-x-12">
-            <div className="text-gray-400">5000+ Users</div>
-            <div className="text-gray-400">10,000+ Buckets Created</div>
-            <div className="text-gray-400">4.9/5 Rating</div>
+        <div className="bg-gray-800 rounded-2xl p-8 text-center">
+          <img 
+            src="/src/assets/Animated heavy breathing cat - Imgur.gif"
+            alt="Organized Cat Meme" 
+            className="mx-auto mb-6 rounded-lg w-64 h-64 object-cover"
+          />
+          <h3 className="text-2xl font-bold text-white mb-4">
+            When developers find their bookmarks organized in LinkBucket
+          </h3>
+          <p className="text-gray-400 text-lg">
+            No more "I'll organize it later" excuses! 😺
+          </p>
+        </div>
+      </div>
+
+      {/* New Why Choose Us Section */}
+      <div className="container mx-auto px-4 py-16">
+        <h2 className="text-3xl font-bold text-white text-center mb-12">
+          Why Developers Love LinkBucket
+        </h2>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="bg-gray-800 p-6 rounded-xl">
+            <div className="text-green-500 text-2xl mb-2">99.9%</div>
+            <div className="text-white font-medium">Uptime</div>
+            <p className="text-gray-400 text-sm mt-2">Always available when you need it</p>
+          </div>
+          <div className="bg-gray-800 p-6 rounded-xl">
+            <div className="text-blue-500 text-2xl mb-2">{"<"}50ms</div>
+            <div className="text-white font-medium">Response Time</div>
+            <p className="text-gray-400 text-sm mt-2">Lightning-fast performance</p>
+          </div>
+          <div className="bg-gray-800 p-6 rounded-xl">
+            <div className="text-purple-500 text-2xl mb-2">256-bit</div>
+            <div className="text-white font-medium">Encryption</div>
+            <p className="text-gray-400 text-sm mt-2">Enterprise-grade security</p>
+          </div>
+          <div className="bg-gray-800 p-6 rounded-xl">
+            <div className="text-orange-500 text-2xl mb-2">24/7</div>
+            <div className="text-white font-medium">Support</div>
+            <p className="text-gray-400 text-sm mt-2">We're here to help</p>
+          </div>
+        </div>
+      </div>
+
+      {/* New Testimonials Section */}
+      <div className="container mx-auto px-4 py-16">
+        <h2 className="text-3xl font-bold text-white text-center mb-12">
+          What Developers Say
+        </h2>
+        <div className="grid md:grid-cols-3 gap-8">
+          <div className="bg-gray-800 p-6 rounded-xl">
+            <div className="flex items-center mb-4">
+              <img 
+                src="https://api.dicebear.com/7.x/avataaars/svg?seed=John" 
+                alt="John" 
+                className="w-12 h-12 rounded-full"
+              />
+              <div className="ml-4">
+                <div className="text-white font-medium">John D.</div>
+                <div className="text-gray-400 text-sm">Senior Developer</div>
+              </div>
+            </div>
+            <p className="text-gray-300">
+              "Finally, a bookmarking tool that speaks developer! The API integration is just *chef's kiss*"
+            </p>
+          </div>
+          <div className="bg-gray-800 p-6 rounded-xl">
+            <div className="flex items-center mb-4">
+              <img 
+                src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah" 
+                alt="Sarah" 
+                className="w-12 h-12 rounded-full"
+              />
+              <div className="ml-4">
+                <div className="text-white font-medium">Sarah M.</div>
+                <div className="text-gray-400 text-sm">Tech Lead</div>
+              </div>
+            </div>
+            <p className="text-gray-300">
+              "Our team's productivity skyrocketed after we started using LinkBucket for project resources."
+            </p>
+          </div>
+          <div className="bg-gray-800 p-6 rounded-xl">
+            <div className="flex items-center mb-4">
+              <img 
+                src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" 
+                alt="Alex" 
+                className="w-12 h-12 rounded-full"
+              />
+              <div className="ml-4">
+                <div className="text-white font-medium">Alex K.</div>
+                <div className="text-gray-400 text-sm">Full-stack Developer</div>
+              </div>
+            </div>
+            <p className="text-gray-300">
+              "The search functionality is incredible. I can find that one Stack Overflow link from 3 months ago in seconds!"
+            </p>
           </div>
         </div>
       </div>
