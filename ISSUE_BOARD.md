@@ -2,11 +2,18 @@
 
 ## 🏃‍♂️ Sprint Atual (Sprint 1 - MVP Core)
 
+### ✅ Concluído
+- [x] #1 Implementar autenticação JWT (Frontend Mock)
+  - Frontend interface de login/registro
+  - Validação de senha
+  - Persistência local temporária
+  - Middleware de autenticação no frontend
+
 ### 🔄 Em Progresso
-- [ ] #1 Implementar autenticação JWT
+- [ ] #1 Implementar autenticação JWT (Backend Integration)
   - Setup Spring Security
   - Endpoints de registro e login
-  - Middleware de autenticação no frontend
+  - Integração frontend-backend
   - Testes de integração
 
 - [ ] #2 CRUD de Buckets
