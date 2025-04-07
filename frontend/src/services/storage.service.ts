@@ -1,31 +1,44 @@
 export interface StoredBucket {
-  id: string
-  name: string
-  description?: string
-  createdAt: string
-  userId: string
-  pills: any[] // TODO: Define proper type for pills
+  id: string;
+  name: string;
+  description?: string;
+  createdAt: string;
+  userId: string;
+  userName?: string;  // Adicionando userName
+  isPublic?: boolean; // Adicionando flag de público
+  pills: any[]; // TODO: Define proper type for pills
 }
 
 class StorageService {
-  private readonly BUCKETS_KEY = 'buckets'
+  private readonly BUCKETS_KEY = 'buckets';
 
   private getBuckets(): StoredBucket[] {
-    const bucketsJson = localStorage.getItem(this.BUCKETS_KEY)
-    return bucketsJson ? JSON.parse(bucketsJson) : []
+    const bucketsJson = localStorage.getItem(this.BUCKETS_KEY);
+    return bucketsJson ? JSON.parse(bucketsJson) : [];
   }
 
   private saveBuckets(buckets: StoredBucket[]): void {
-    localStorage.setItem(this.BUCKETS_KEY, JSON.stringify(buckets))
+    localStorage.setItem(this.BUCKETS_KEY, JSON.stringify(buckets));
   }
 
   getUserBuckets(userId: string): StoredBucket[] {
-    const buckets = this.getBuckets()
-    return buckets.filter(bucket => bucket.userId === userId)
+    const buckets = this.getBuckets();
+    return buckets.filter(bucket => bucket.userId === userId);
   }
 
-  createBucket(userId: string, data: { name: string; description?: string }): StoredBucket {
-    const buckets = this.getBuckets()
+  getPublicBuckets(): StoredBucket[] {
+    const buckets = this.getBuckets();
+    return buckets
+      .filter(bucket => bucket.isPublic)
+      .slice(0, 10); // Limitando a 10 buckets públicos
+  }
+
+  createBucket(userId: string, data: { 
+    name: string; 
+    description?: string;
+    isPublic?: boolean;
+  }): StoredBucket {
+    const buckets = this.getBuckets();
     
     const newBucket: StoredBucket = {
       id: crypto.randomUUID(),
@@ -33,13 +46,14 @@ class StorageService {
       description: data.description,
       createdAt: new Date().toISOString(),
       userId: userId,
+      isPublic: data.isPublic ?? false,
       pills: []
-    }
+    };
 
-    buckets.push(newBucket)
-    this.saveBuckets(buckets)
+    buckets.push(newBucket);
+    this.saveBuckets(buckets);
     
-    return newBucket
+    return newBucket;
   }
 
   deleteBucket(bucketId: string): void {

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Logo } from '../components/Logo'
+import ImageCat from '../assets/Animated heavy breathing cat - Imgur.gif'
 
 export default function LandingPage() {
   return (
@@ -93,7 +94,7 @@ export default function LandingPage() {
       <div className="container mx-auto px-4 py-16">
         <div className="bg-gray-800 rounded-2xl p-8 text-center">
           <img 
-            src="/src/assets/Animated heavy breathing cat - Imgur.gif"
+            src={ImageCat}
             alt="Organized Cat Meme" 
             className="mx-auto mb-6 rounded-lg w-64 h-64 object-cover"
           />
