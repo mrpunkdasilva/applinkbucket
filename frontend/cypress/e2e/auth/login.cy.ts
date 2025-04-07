@@ -1,5 +1,4 @@
 /// <reference types="cypress" />
-
 describe('Login Flow', () => {
   beforeEach(() => {
     cy.visit('/login')
@@ -22,14 +21,11 @@ describe('Login Flow', () => {
   })
 
   it('should login successfully with valid credentials', () => {
-    cy.get('input[type="email"]').type('test@example.com')
-    cy.get('input[type="password"]').type('Pa$$w0rd!')
+    cy.get('input[type="email"]').type(mockUserCredentials.email)
+    cy.get('input[type="password"]').type(mockUserCredentials.password)
     cy.get('button[type="submit"]').click()
 
-    // Verifica redirecionamento
     cy.url().should('include', '/dashboard')
-    
-    // Verifica se o usuário está logado
     cy.get('[data-testid="user-menu"]').should('exist')
   })
 

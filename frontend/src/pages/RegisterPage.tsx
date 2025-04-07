@@ -1,15 +1,16 @@
-import { FormEvent } from 'react'
+import { FormEvent, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { AuthLayout } from '../components/auth/AuthLayout'
 import { PasswordStrengthGuide } from '../components/auth/PasswordStrengthGuide'
 import { useAuthForm } from '../hooks/useAuthForm'
-import { emailValidation, nameValidation, validatePassword } from '../utils/validations'
+import { emailValidation, validatePassword } from '../utils/validations'
 import { FormInput } from '../components/auth/FormInput'
 
 export default function RegisterPage() {
   const navigate = useNavigate()
   const { register } = useAuth()
+  const [error, setError] = useState<string | null>(null)
   
   const {
     formState,
@@ -25,13 +26,14 @@ export default function RegisterPage() {
       password: { value: '' }
     },
     {
-      name: nameValidation,
       email: emailValidation
     }
   )
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
+    setError(null)
+
     if (hasErrors() || !validatePassword(formState.password.value)) {
       return
     }
@@ -40,9 +42,9 @@ export default function RegisterPage() {
     try {
       const values = getValues()
       await register(values.name, values.email, values.password)
-      navigate('/dashboard')
+      navigate('/dashboard', { replace: true })
     } catch (err: any) {
-      // Handle error appropriately
+      setError(err.message || 'Failed to create account. Please try again.')
     } finally {
       setIsSubmitting(false)
     }
@@ -61,9 +63,15 @@ export default function RegisterPage() {
       }
     >
       <form className="space-y-6" onSubmit={handleSubmit}>
+        {error && (
+          <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md">
+            {error}
+          </div>
+        )}
+
         <FormInput
           id="name"
-          label="Full name"
+          label="Name"
           type="text"
           value={formState.name.value}
           error={formState.name.error}
@@ -94,17 +102,15 @@ export default function RegisterPage() {
           <PasswordStrengthGuide password={formState.password.value} />
         </div>
 
-        <button
-          type="submit"
-          disabled={isSubmitting || hasErrors()}
-          className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${
-            isSubmitting || hasErrors()
-              ? 'bg-blue-400 cursor-not-allowed'
-              : 'bg-blue-500 hover:bg-blue-600'
-          } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
-        >
-          {isSubmitting ? 'Creating account...' : 'Create account'}
-        </button>
+        <div>
+          <button
+            type="submit"
+            disabled={isSubmitting || hasErrors() || !validatePassword(formState.password.value)}
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-400 disabled:cursor-not-allowed"
+          >
+            {isSubmitting ? 'Creating account...' : 'Create account'}
+          </button>
+        </div>
       </form>
     </AuthLayout>
   )

@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { LoginForm } from './LoginForm'
+import { mockUserCredentials, initializeMockStorage, clearMockStorage } from '../../mocks/users'
 
 // Mock do useAuth
 const mockLogin = vi.fn()
@@ -24,13 +25,18 @@ vi.mock('../../hooks/useAuthForm', () => ({
     setIsSubmitting: vi.fn(),
     updateField: vi.fn(),
     hasErrors: () => false,
-    getValues: () => ({ email: 'test@example.com', password: 'password123' })
+    getValues: () => ({ 
+      email: mockUserCredentials.email, 
+      password: mockUserCredentials.password 
+    })
   })
 }))
 
 describe('LoginForm', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    clearMockStorage()
+    initializeMockStorage()
   })
 
   it('should render login form', () => {
@@ -41,17 +47,20 @@ describe('LoginForm', () => {
     expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument()
   })
 
-  it('should call login function with form data', async () => {
+  it('should call login function with mock credentials', async () => {
     render(<LoginForm />)
 
     fireEvent.change(screen.getByLabelText(/email/i), {
-      target: { value: 'test@example.com' },
+      target: { value: mockUserCredentials.email },
     })
     fireEvent.change(screen.getByLabelText(/password/i), {
-      target: { value: 'password123' },
+      target: { value: mockUserCredentials.password },
     })
     fireEvent.click(screen.getByRole('button', { name: /sign in/i }))
 
-    expect(mockLogin).toHaveBeenCalledWith('test@example.com', 'password123')
+    expect(mockLogin).toHaveBeenCalledWith(
+      mockUserCredentials.email, 
+      mockUserCredentials.password
+    )
   })
 })

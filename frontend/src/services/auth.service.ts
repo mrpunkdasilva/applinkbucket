@@ -1,71 +1,69 @@
-import { LoginCredentials, RegisterData, User } from '../types/auth'
+import { User, UserRole } from '../types/user'
 
 class AuthService {
-  private readonly STORAGE_KEY = 'auth_user'
-  private readonly USERS_STORAGE_KEY = 'registered_users'
-  // private readonly API_URL = '/api/auth' // Para quando integrarmos com o backend
+  private readonly STORAGE_KEY = 'user'
+  private readonly USERS_KEY = 'registered_users'
 
-  private getRegisteredUsers(): User[] {
-    const users = localStorage.getItem(this.USERS_STORAGE_KEY)
-    return users ? JSON.parse(users) : []
+  private getRegisteredUsers(): any[] {
+    const usersJson = localStorage.getItem(this.USERS_KEY)
+    return usersJson ? JSON.parse(usersJson) : []
   }
 
-  private saveRegisteredUsers(users: User[]): void {
-    localStorage.setItem(this.USERS_STORAGE_KEY, JSON.stringify(users))
+  private saveRegisteredUsers(users: any[]): void {
+    localStorage.setItem(this.USERS_KEY, JSON.stringify(users))
   }
 
-  async login(credentials: LoginCredentials): Promise<User> {
-    try {
-      const users = this.getRegisteredUsers()
-      const user = users.find(u => u.email === credentials.email)
+  private saveUserToStorage(user: User): void {
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(user))
+  }
 
-      if (!user || user.password !== credentials.password) {
-        throw new Error('Invalid credentials')
-      }
+  getCurrentUser(): User | null {
+    const userData = localStorage.getItem(this.STORAGE_KEY)
+    return userData ? JSON.parse(userData) : null
+  }
 
-      const userData: User = {
-        email: user.email,
-        name: user.name,
-        token: 'dummy-token-' + Date.now()
-      }
-
-      this.saveUserToStorage(userData)
+  async validateToken(token: string): Promise<User | null> {
+    const userData = this.getCurrentUser()
+    if (userData?.token === token) {
       return userData
-    } catch (error) {
-      throw new Error('Invalid credentials')
     }
+    return null
   }
 
-  async register(data: RegisterData): Promise<User> {
+  async register(name: string, email: string, password: string): Promise<User> {
     try {
       const users = this.getRegisteredUsers()
-      
-      // Verificar se o email já está registrado
-      if (users.some(user => user.email === data.email)) {
+
+      if (users.some(user => user.email === email)) {
         throw new Error('Email already registered')
       }
 
-      // Criar novo usuário
-      const newUser: User & { password: string } = {
-        email: data.email,
-        name: data.name,
-        password: data.password, // Em uma implementação real, isso seria hasheado
+      // Criando o usuário de acordo com a interface User
+      const newUser: User = {
+        id: String(Date.now()),
+        email,
+        name,
+        role: UserRole.FREE,
+        createdAt: new Date().toISOString(),
+        subscription: {
+          type: 'FREE'
+        }
+      }
+
+      const userWithPassword = {
+        ...newUser,
+        password,
         token: 'dummy-token-' + Date.now()
       }
 
-      // Salvar na lista de usuários
-      users.push(newUser)
+      users.push(userWithPassword)
       this.saveRegisteredUsers(users)
+      this.saveUserToStorage(newUser)
 
-      // Retornar dados do usuário (sem a senha)
-      const userData: User = {
-        email: newUser.email,
-        name: newUser.name,
-        token: newUser.token
-      }
-
-      this.saveUserToStorage(userData)
-      return userData
+      return {
+        ...newUser,
+        token: userWithPassword.token // Adicionando o token apenas no retorno
+      } as User
     } catch (error) {
       if (error instanceof Error) {
         throw error
@@ -74,21 +72,50 @@ class AuthService {
     }
   }
 
-  logout(): void {
-    localStorage.removeItem(this.STORAGE_KEY)
-  }
-
-  getCurrentUser(): User | null {
+  async login(email: string, password: string): Promise<User> {
     try {
-      const userData = localStorage.getItem(this.STORAGE_KEY)
-      return userData ? JSON.parse(userData) : null
+      const users = this.getRegisteredUsers()
+      const user = users.find(u => u.email === email && u.password === password)
+
+      if (!user) {
+        throw new Error('Invalid credentials')
+      }
+
+      // Criando o objeto de acordo com a interface User
+      const userData: User = {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        createdAt: user.createdAt,
+        subscription: user.subscription || { type: 'FREE' }
+      }
+
+      const userWithToken = {
+        ...userData,
+        token: 'dummy-token-' + Date.now()
+      }
+
+      this.saveUserToStorage(userWithToken)
+      return userWithToken as User
     } catch (error) {
-      return null
+      throw new Error('Invalid credentials')
     }
   }
 
-  private saveUserToStorage(user: User): void {
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(user))
+  async updateUser(data: Partial<User>): Promise<User> {
+    const currentUser = this.getCurrentUser()
+    if (!currentUser) {
+      throw new Error('No user logged in')
+    }
+
+    const updatedUser = { ...currentUser, ...data }
+    this.saveUserToStorage(updatedUser)
+    return updatedUser
+  }
+
+  logout(): void {
+    localStorage.removeItem(this.STORAGE_KEY)
   }
 }
 

@@ -1,8 +1,18 @@
+import { UserRole } from './user'
+
 export interface User {
+  id: string
   name: string
   email: string
+  role: UserRole
   token: string
-  password?: string // Opcional, usado apenas para armazenamento local
+  createdAt: string
+  password?: string // Optional, used only for local storage
+  profilePicture?: string
+  subscription?: {
+    type: 'FREE' | 'PRO'
+    validUntil?: string
+  }
 }
 
 export interface LoginCredentials {
