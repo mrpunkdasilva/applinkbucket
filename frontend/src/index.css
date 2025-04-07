@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .hide-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
+  
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;            /* Chrome, Safari and Opera */
+  }
+}
+
+/* Melhorias de acessibilidade */
+@layer base {
+  :focus {
+    @apply outline-2 outline-offset-2 outline-blue-500;
+  }
+
+  /* High contrast mode improvements */
+  @media (forced-colors: active) {
+    .button {
+      @apply border-2;
+    }
+  }
+}
